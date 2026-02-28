@@ -1,29 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CharacterService } from './services/character';
+import { CommonModule } from '@angular/common'; // IMPORTANTE: Para que funcione el *ngFor en tu HTML
+import { CharacterService } from './services/character'; // Importamos tu servicio
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule], // Le damos permiso al HTML para usar directivas como *ngFor
   templateUrl: './app.html',
-  styleUrls: ['./app.css']
+  styleUrls: ['./app.css'] // (Si tienes un archivo de estilos distinto, pon su nombre aquí)
 })
 export class App implements OnInit {
-  // Aquí guardaremos a los personajes cuando lleguen
+  // 1. Aquí se guardará la lista de personajes
   characters: any[] = [];
-  // Nuestro interruptor para el mensaje de "Cargando..."
-  isLoading = true;
 
+  // 2. Llamamos al "mesero" (el servicio)
   constructor(private characterService: CharacterService) {}
 
+  // 3. Esta función se ejecuta automáticamente en cuanto la página carga
   ngOnInit(): void {
-    // Llamamos al mesero
-    this.characterService.getCharacters().subscribe((data: any) => {
-      // ¡Aquí está la magia! Le decimos que saque los datos de la caja "results"
-      this.characters = data.results; 
-      // Apagamos el mensaje de "Cargando..."
-      this.isLoading = false;
+    this.characterService.getCharacters().subscribe({
+      next: (data: any) => {
+        // LA CLAVE: La API de Rick and Morty manda los personajes dentro de un arreglo llamado "results"
+        this.characters = data.results; 
+        console.log('¡Personajes recibidos!', this.characters);
+      },
+      error: (error) => {
+        console.error('Hubo un error al pedir los personajes:', error);
+      }
     });
   }
 }

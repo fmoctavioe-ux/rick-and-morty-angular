@@ -1,19 +1,19 @@
-<div class="container mt-5 text-center">
-  <h1 class="mb-4">API Rick and Morty 🛸</h1>
-
-  <div *ngIf="isLoading">
-    <h3 class="text-secondary">Cargando personajes... ⏳</h3>
+<div class="container mt-5">
+  <div class="text-center mb-5">
+    <h1>API Rick and Morty 🛸</h1>
   </div>
 
-  <div *ngIf="!isLoading" class="row">
-    
-    <div *ngFor="let character of characters" class="col-md-4 mb-4">
-      <div class="card h-100 shadow-sm border-info">
-        <img [src]="character.image" class="card-img-top" alt="Imagen de {{ character.name }}">
+  <div class="text-center" *ngIf="characters.length === 0">
+    <h3 class="text-muted">Cargando personajes... ⏳</h3>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 col-sm-6 mb-4" *ngFor="let character of characters">
+      <div class="card h-100 shadow-sm">
+        <img [src]="character.image" class="card-img-top" [alt]="character.name">
         
-        <div class="card-body bg-dark text-white">
-          <h5 class="card-title text-info">{{ character.name }}</h5>
-          
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold">{{ character.name }}</h5>
           <p class="card-text">
             <strong>Estado:</strong> {{ character.status }} <br>
             <strong>Especie:</strong> {{ character.species }}
@@ -21,6 +21,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
